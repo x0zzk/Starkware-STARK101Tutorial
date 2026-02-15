@@ -17,8 +17,8 @@
 
 from random import randint
 
-from field import FieldElement
-from polynomial import Polynomial, interpolate_poly, X, prod
+from stark101.field import FieldElement
+from stark101.polynomial import Polynomial, interpolate_poly, X, prod
 
 
 def random_polynomial(degree):

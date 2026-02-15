@@ -15,32 +15,22 @@
 ###############################################################################
 
 
-from collections import Counter
-from functools import reduce
-from math import sqrt
-from random import randint
-
-from channel import Channel
+from stark101.field import FieldElement
 
 
-def test_reproducability():
-    c = Channel()
-    c.send("Yes")
-    r = c.receive_random_int(0, 2 ** 20)
-    d = Channel()
-    d.send("Yes")
-    assert r == d.receive_random_int(0, 2 ** 20)
+def test_field_operations():
+    # Check pow, mul, and the modular operations
+    t = FieldElement(2).pow(30) * FieldElement(3) + FieldElement(1)
+    assert t == FieldElement(0)
+    # Check generator
+    # Check inverse
+    # Check hash via usage of set
 
 
-def test_uniformity():
-    range_size = 10
-    c = Channel()
-    c.send(str(randint(0, 2 ** 20)))
-    num_tries = 2 ** 10
-    dist = Counter(c.receive_random_int(0, range_size - 1) for i in range(num_tries))
-    dist_rand = Counter(randint(0, range_size - 1) for i in range(num_tries))
-    mean = num_tries / range_size
-    normalized_stdv_channel = sqrt(sum((y-mean)**2 for y in dist.values())) / range_size
-    normalized_stdv_random = sqrt(sum((y-mean)**2 for y in dist_rand.values())) / range_size
-    assert abs(normalized_stdv_channel - normalized_stdv_random) < 4
+def test_field_div():
+    for _ in range(100):
+        t = FieldElement.random_element(exclude_elements=[FieldElement.zero()])
+        t_inv = FieldElement.one() / t
+        assert t_inv == t.inverse()
+        assert t_inv * t == FieldElement.one()
 

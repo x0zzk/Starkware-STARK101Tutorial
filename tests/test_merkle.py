@@ -18,8 +18,8 @@
 from hashlib import sha256
 from random import randint
 
-from field import FieldElement
-from merkle import MerkleTree, verify_decommitment
+from stark101.field import FieldElement
+from stark101.merkle import MerkleTree, verify_decommitment
 
 
 def test_merkle_get_authentication_path():
